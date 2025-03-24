@@ -44,8 +44,8 @@ def startSparkApp():
     avg_age_df.show()
 
     # wait for some time
+    print("Will be waiting for 2 hours and 10 minutes: ")
     for i in range(13):
-        print("Will be waiting for 2 hours and 10 minutes: ")
         print("Splitted in 10 miutes intervals -> "+str(i+1)+" out of 13")
         wait_for(10)
     # Stop the Spark session
