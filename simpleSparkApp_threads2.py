@@ -24,8 +24,8 @@ def main():
         .getOrCreate()
     
     log("[Main] Main thread exiting")
-    thread_one = threading.Thread(target=task, args=(1,spark,))
-    thread_two = threading.Thread(target=task, args=(2,spark,))
+    thread_one = threading.Thread(target=task, args=(15,spark,))
+    thread_two = threading.Thread(target=task, args=(20,spark,))
     thread_one.start()
     thread_two.start()
     time.sleep(30)
