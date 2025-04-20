@@ -10,9 +10,8 @@ def log(message):
 
 # Thread target function
 def sleeper_thread(thread_id):
-    for i in range(4):
-        log(f"[Thread-{thread_id}] Sleeping for 5 minutes ({i+1}/4)...")
-        time.sleep(300)  # 5 minutes
+    log(f"[Thread-{thread_id}] Sleeping for 15 minutes...")
+    time.sleep(900)  # 15 minutes
     log(f"[Thread-{thread_id}] Finished sleeping.")
 
 # Main function
@@ -32,7 +31,7 @@ def main():
 
     # Start daemon threads
     threads = []
-    num_threads = 4
+    num_threads = 3
     for i in range(num_threads):
         t = threading.Thread(target=sleeper_thread, args=(i,), daemon=True)
         t.start()
