@@ -1,55 +1,55 @@
 from pyspark.sql import SparkSession
 import threading
 import time
-import random
 from datetime import datetime
 
-def print_current_datetime():
-    now = datetime.now()
-    readable_time = now.strftime("%A, %B %d, %Y at %I:%M:%S %p")
-    return readable_time
+# Utility function to print with timestamp
+def log(message):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{timestamp}] {message}")
 
-# Function that will run in daemon threads
-def background_worker(thread_id):
-    while True:
-        print(print_current_datetime()+f" [Thread-{thread_id}] Doing background work...")
-        time.sleep(random.uniform(1, 3))  # Simulate variable work time
+# Thread target function
+def sleeper_thread(thread_id):
+    for i in range(4):
+        log(f"[Thread-{thread_id}] Sleeping for 5 minutes ({i+1}/4)...")
+        time.sleep(300)  # 5 minutes
+    log(f"[Thread-{thread_id}] Finished sleeping.")
 
-# Main Spark application
+# Main function
 def main():
-    # Initialize Spark
+    # Initialize SparkSession
     spark = SparkSession.builder \
-        .appName("DaemonThreadsInSpark") \
-        .master("local[*]") \
+        .appName("SimpleDFWithThreads") \
         .getOrCreate()
 
-    print( print_current_datetime() + "🚀 SparkSession started")
+    # Create and show DataFrame
+    data = [("Alice", 30), ("Bob", 25), ("Cathy", 27)]
+    columns = ["Name", "Age"]
+    df = spark.createDataFrame(data, columns)
 
-    # Create and start daemon threads
-    for i in range(4):
-        t = threading.Thread(target=background_worker, args=(i,))
-        t.daemon = True  # Make thread a daemon
+    log("=== DataFrame Created ===")
+    df.show()
+
+    # Start daemon threads
+    threads = []
+    num_threads = 4
+    for i in range(num_threads):
+        t = threading.Thread(target=sleeper_thread, args=(i,), daemon=True)
         t.start()
-        print(print_current_datetime() + f"🧵 Daemon thread {i} started")
+        threads.append(t)
 
-    # Spark part – dummy transformation
-    data = [1, 2, 3, 4, 5]
-    rdd = spark.sparkContext.parallelize(data)
-    squared = rdd.map(lambda x: x * x).collect()
+    # Optional: small sleep to ensure threads start
+    time.sleep(2)
 
-    print(print_current_datetime() + f"✅ Result of Spark transformation: {squared}")
-
-    # Keep the main thread alive for a while to let daemon threads run
-    print(print_current_datetime() + "🕒 Waiting to observe daemon threads...")
-    minutes = 5
-    # Convert minutes to seconds
-    print(print_current_datetime() + f"Waiting for {minutes} minutes...")
-    time.sleep(minutes * 60)
-
-    # Done
-    print(print_current_datetime() + "🛑 Done. Spark will stop, daemon threads will also terminate.")
-
+    # Stop Spark
+    log("Stopping SparkSession...")
     spark.stop()
+    log("SparkSession stopped.")
+
+    # Let daemon threads run for a bit longer before main exits
+    time.sleep(60)  # adjust as needed (1 min here)
+
+    log("Main thread exiting. Daemon threads will be terminated.")
 
 if __name__ == "__main__":
     main()
