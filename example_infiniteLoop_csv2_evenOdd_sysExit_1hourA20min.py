@@ -20,6 +20,12 @@ spark = SparkSession.builder.appName("service").enableHiveSupport().getOrCreate(
 spark.conf.set('spark.sql.caseSensitive', True)
 spark.conf.set('spark.sql.files.ignoreMissingFiles', True)
 spark.conf.set("spark.sql.session.timeZone", "Asia/Tokyo")
+#------
+spark.conf.set("spark.hadoop.fs.s3a.connection.maximum", "100")  # Increase max connections
+spark.conf.set("spark.hadoop.fs.s3a.connection.timeout", "60000")  # Timeout in ms (e.g., 60 seconds)
+spark.conf.set("spark.hadoop.fs.s3a.retry.limit", "5")  # Number of retries
+spark.conf.set("spark.hadoop.fs.s3a.retry.interval", "5000")  # Retry interval in ms
+#-----
 sc = spark.sparkContext
 hconf=sc._jsc.hadoopConfiguration()
 hconf.set("fs.cos.cloudobjectstorage.endpoint", "s3.jp-tok.cloud-object-storage.appdomain.cloud")
