@@ -28,8 +28,8 @@ spark.conf.set("spark.hadoop.fs.stocator.connection.timeout.ms", "60000")       
 spark.conf.set("spark.hadoop.fs.stocator.read.timeout.ms", "120000")            # Optional, 2 minutes read timeout
 spark.conf.set("spark.hadoop.fs.stocator.retry.count", "5")                     # Retry limit
 spark.conf.set("spark.hadoop.fs.stocator.retry.interval.ms", "5000")            # Retry interval
-spark.conf.set("spark.executor.heartbeatInterval", "30s")
-spark.conf.set("spark.network.timeout", "300s")
+#spark.conf.set("spark.executor.heartbeatInterval", "30s") results an error - application is not running
+#spark.conf.set("spark.network.timeout", "300s") results an error - application is not running
 spark.conf.set("spark.hadoop.fs.stocator.write.timeout.ms", "60000")
 spark.conf.set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
 #-----
