@@ -22,16 +22,11 @@ spark.conf.set('spark.sql.files.ignoreMissingFiles', True)
 spark.conf.set("spark.sql.session.timeZone", "Asia/Tokyo")
 #------
 spark.conf.set("spark.hadoop.fs.cos.impl", "com.ibm.stocator.fs.ObjectStoreFileSystem")
-#spark.conf.set("spark.hadoop.fs.stocator.cos.impl", "com.ibm.stocator.fs.cos.COSAPIClient")
 spark.conf.set("spark.hadoop.fs.stocator.cos.impl", "com.ibm.stocator.fs.s3.S3APIClient")
-
-
 spark.conf.set("spark.hadoop.fs.stocator.connection.timeout.ms", "60000")       # 60 seconds
 spark.conf.set("spark.hadoop.fs.stocator.read.timeout.ms", "120000")            # Optional, 2 minutes read timeout
 spark.conf.set("spark.hadoop.fs.stocator.retry.count", "5")                     # Retry limit
 spark.conf.set("spark.hadoop.fs.stocator.retry.interval.ms", "5000")            # Retry interval
-#spark.conf.set("spark.executor.heartbeatInterval", "30s") results an error - application is not running
-#spark.conf.set("spark.network.timeout", "300s") results an error - application is not running
 spark.conf.set("spark.hadoop.fs.stocator.write.timeout.ms", "60000")
 spark.conf.set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
 #-----
@@ -44,7 +39,7 @@ hconf.set("fs.cos.cloudobjectstorage.iam.api.key","6uQQFo7Fc-bSUE4Vlym7aOeIh_Qbw
 hconf.set("fs.stocator.scheme.list", "cos")
 hconf.set("fs.stocator.cos.scheme", "cos")
 hconf.set("fs.cos.impl", "com.ibm.stocator.fs.ObjectStoreFileSystem")#
-hconf.set("fs.stocator.cos.impl", "com.ibm.stocator.fs.cos.COSAPIClient")
+hconf.set("fs.stocator.cos.impl", "com.ibm.stocator.fs.s3.S3APIClient")
 log("Done COS configuration")
 query = "SELECT ID, DATA FROM aetemptable LIMIT 100000"
 
