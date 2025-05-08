@@ -57,19 +57,21 @@ def check_spark_jobs():
 def read_write_app(input_name, output_name):
     log("\nSTEP1\n")
     read_df = spark.read.option("header", True).csv("cos://faisalsbkt.cloudobjectstorage/multiple_csvs/"+input_name)
+    read_df.count() # Always trigger an action like .count() or .collect() and verify Spark finishes
 
     log("\nSTEP2\n")
     read_df.createOrReplaceTempView("aetemptable")
-
+    
     log("\nSTEP3\n")
     query_df = spark.sql(query)
     query_df.show()
 
     log("\nSTEP4\n")
-    query_df.coalesce(1).write.option("header", True).option("compression", "gzip").mode("overwrite").csv("cos://faisalsbkt.cloudobjectstorage/output/"+output_name)
+    query_df.write.option("header", True).option("compression", "gzip").mode("overwrite").csv("cos://faisalsbkt.cloudobjectstorage/output/"+output_name)
 
     spark.catalog.dropTempView("aetemptable")
-
+    query_df.unpersist()
+    read_df.unpersist()
     # if hasattr(query_df, "isStreaming") and query_df.isStreaming:
     #     log("\nis streaming\n")
     #     query_df.awaitTermination()
