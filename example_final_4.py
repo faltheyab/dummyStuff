@@ -67,7 +67,7 @@ def read_write_app(input_name, output_name):
     query_df.show()
 
     log("\nSTEP4\n")
-    query_df.write.option("header", True).option("compression", "gzip").mode("overwrite").csv("cos://faisalsbkt.cloudobjectstorage/output/"+output_name)
+    query_df.repartition(1).write.option("header", True).option("compression", "gzip").mode("overwrite").csv("cos://faisalsbkt.cloudobjectstorage/output/"+output_name)
 
     spark.catalog.dropTempView("aetemptable")
     query_df.unpersist()
