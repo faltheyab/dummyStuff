@@ -33,7 +33,7 @@ spark.conf.set("spark.hadoop.fs.stocator.retry.interval.ms", "5000")            
 spark.conf.set("spark.hadoop.fs.stocator.write.timeout.ms", "60000")
 spark.conf.set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
 spark.conf.set("spark.hadoop.fs.s3a.connection.maximum", "64")
-
+spark.conf.set("spark.hadoop.fs.s3a.threads.max", "64")
 #-----
 sc = spark.sparkContext
 hconf=sc._jsc.hadoopConfiguration()
@@ -46,6 +46,8 @@ hconf.set("fs.stocator.cos.scheme", "cos")
 hconf.set("fs.cos.impl", "com.ibm.stocator.fs.ObjectStoreFileSystem")#
 hconf.set("fs.stocator.cos.impl", "com.ibm.stocator.fs.cos.COSAPIClient")
 hconf.set("fs.s3a.connection.maximum", "64")
+hconf.set("fs.s3a.threads.max", "64")
+
 log("Done COS configuration")
 query = "SELECT ID, DATA FROM aetemptable LIMIT 100000"
 
