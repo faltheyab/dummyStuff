@@ -64,8 +64,9 @@ while True:
 
 
 log("************----------------------Application finished----------------------------************")
-log("Stopping: jvm.org.apache.hadoop.fs.FileSystem.closeAll()-> spark context -> spark session -> sleep 10 seconds -> sys.exit(0) -> os._exit(0)")
+log("Stopping: jvm.org.apache.hadoop.fs.FileSystem.closeAll() -> jvm.java.lang.System.exit(0) -> spark context -> spark session -> sleep 10 seconds -> sys.exit(0) -> os._exit(0)")
 jvm.org.apache.hadoop.fs.FileSystem.closeAll()
+jvm.java.lang.System.exit(0)
 sc.stop()
 spark.stop()
 time.sleep(10)
