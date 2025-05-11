@@ -3,7 +3,7 @@ from pyspark.sql.types import *
 from datetime import datetime, timedelta
 import os, sys, time,random
 
-finish_time=(datetime.now() + timedelta(minutes=45))
+finish_time=(datetime.now() + timedelta(hours=1, minutes=30))
 
 def get_random_int():
     return random.randint(0, 10)
@@ -66,7 +66,7 @@ while True:
 log("************----------------------Application finished----------------------------************")
 log("Stopping: jvm.org.apache.hadoop.fs.FileSystem.closeAll() -> jvm.java.lang.System.exit(0) -> spark context -> spark session -> sleep 10 seconds -> sys.exit(0) -> os._exit(0)")
 jvm.org.apache.hadoop.fs.FileSystem.closeAll()
-jvm.java.lang.System.exit(0)
+#jvm.java.lang.System.exit(0)
 sc.stop()
 spark.stop()
 time.sleep(10)
