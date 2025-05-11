@@ -22,7 +22,7 @@ spark.conf.set('spark.sql.files.ignoreMissingFiles', True)
 spark.conf.set("spark.sql.session.timeZone", "Asia/Tokyo")
 #------
 spark.conf.set("spark.hadoop.fs.cos.impl", "com.ibm.stocator.fs.ObjectStoreFileSystem")
-spark.conf.set("spark.hadoop.fs.stocator.cos.impl", "com.ibm.stocator.fs.cos.COSAPIClient")
+spark.conf.set("spark.hadoop.fs.stocator.cos.impl", "com.ibm.stocator.fs.cos.S3AFileSystem")
 
 spark.conf.set("spark.hadoop.fs.stocator.connection.timeout.ms", "60000")       # 60 seconds
 spark.conf.set("spark.hadoop.fs.stocator.read.timeout.ms", "120000")            # Optional, 2 minutes read timeout
@@ -84,9 +84,9 @@ while True:
     #log("Inside loop: random number is "+str(random_num))
     
     if (random_num % 2 == 0):
-        read_write_app("ID_DATA_Example.csv","output_even.csv")
+        read_write_app("ID_DATA_Example.csv","output_even_15min.csv")
     else:
-        read_write_app("Employees.csv","output_odd.csv")
+        read_write_app("Employees.csv","output_odd_15min.csv")
     
     check_spark_jobs()
     if (datetime.now() > finish_time):
