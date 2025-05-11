@@ -77,7 +77,7 @@ def read_write_app(input_name, output_name):
     #     log("\nis streaming\n")
     #     query_df.awaitTermination()
 
-finish_time=(datetime.now() + timedelta(hours=1,minutes=20))
+finish_time=(datetime.now() + timedelta(minutes=30))
 while True:
     #log("--------------------------------------------------")
     random_num = get_random_int()
