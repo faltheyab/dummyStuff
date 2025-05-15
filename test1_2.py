@@ -21,7 +21,7 @@ spark.conf.set('spark.sql.files.ignoreMissingFiles', True)
 spark.conf.set("spark.sql.session.timeZone", "Asia/Tokyo")
 #-----
 sc = spark.sparkContext
-jvm = sc._jvm
+jvm = spark._jvm
 hconf=sc._jsc.hadoopConfiguration()
 hconf.set("fs.cos.cloudobjectstorage.endpoint", "s3.jp-tok.cloud-object-storage.appdomain.cloud")
 hconf.set("fs.cos.cloudobjectstorage.access.key", "bf49816e1eec4368a38b5dc9c57de9a2") 
