@@ -3,7 +3,7 @@ from pyspark.sql.types import *
 from datetime import datetime, timedelta
 import os, sys, time,random
 
-finish_time=(datetime.now() + timedelta(hours=1,minutes=30))
+finish_time=(datetime.now() + timedelta(hours=1,minutes=10))
 
 def get_random_int():
     return random.randint(0, 10)
@@ -19,8 +19,7 @@ spark = SparkSession.builder.appName("service").enableHiveSupport().getOrCreate(
 spark.conf.set('spark.sql.caseSensitive', True)
 spark.conf.set('spark.sql.files.ignoreMissingFiles', True)
 spark.conf.set("spark.sql.session.timeZone", "Asia/Tokyo")
-spark.conf.set("spark.hadoop.fs.stocator.threads.daemon", True)
-
+spark.conf.set("spark.sql.session.timeZone", "Asia/Tokyo")
 #-----
 sc = spark.sparkContext
 jvm = spark._jvm
@@ -57,9 +56,9 @@ while True:
     log("#####------------------------Inside loop: random number is "+str(random_num)+"--------------------------######")
 
     if (random_num % 2 == 0):
-        read_write_app("ID_DATA_Example.csv","output_odd_cleanedUp_1.csv")
+        read_write_app("ID_DATA_Example.csv","output_odd_cleanedUp.csv")
     else:
-        read_write_app("Employees.csv","output_odd_cleanedUp_1.csv")
+        read_write_app("Employees.csv","output_odd_cleanedUp.csv")
     
     if (datetime.now() > finish_time):
         break
@@ -73,10 +72,10 @@ jvm.org.apache.hadoop.fs.FileSystem.closeAll()
 spark.stop()
 
 # Wait briefly to let background threads wind down
-#time.sleep(5)
+time.sleep(5)
 
 # Force exit only if still hanging
-#jvm.java.lang.System.exit(0)  # LAST resort
+jvm.java.lang.System.exit(0)  # LAST resort
 
 #log("Stopping: jvm.org.apache.hadoop.fs.FileSystem.closeAll() -> jvm.java.lang.System.exit(0) -> spark context -> spark session -> sleep 10 seconds -> sys.exit(0) -> os._exit(0)")
 # jvm.java.lang.System.exit(0)
